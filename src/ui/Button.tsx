@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-export const Button = styled.button`
+export const Button = styled.button<{ $ghost?: boolean; $small?: boolean }>`
   border:0;border-radius:12px;padding:13px 20px;font-weight:700;
   background:${(p) => (p.$ghost ? 'transparent' : p.theme.brand)};
   color:${(p) => (p.$ghost ? p.theme.ink : '#fff')};

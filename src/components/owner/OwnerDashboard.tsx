@@ -1,8 +1,8 @@
-import { useStore } from '../../state/StoreContext.jsx';
-import { Panel, TwoCol } from '../../ui/Panel.jsx';
-import StatsRow from './StatsRow.jsx';
-import UpcomingList from './UpcomingList.jsx';
-import ActivityLog from './ActivityLog.jsx';
+import { useStore } from '../../state/StoreContext';
+import { Panel, TwoCol } from '../../ui/Panel';
+import StatsRow from './StatsRow';
+import UpcomingList from './UpcomingList';
+import ActivityLog from './ActivityLog';
 export default function OwnerDashboard() {
   const { state, dispatch } = useStore();
   return (

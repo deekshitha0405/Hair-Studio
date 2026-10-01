@@ -1,8 +1,9 @@
-import { fmtDate, fmtTime } from '../../data.js';
-import { Panel, Row } from '../../ui/Panel.jsx';
-import { Banner } from '../../ui/Banner.jsx';
-import { Button } from '../../ui/Button.jsx';
-export default function BookingConfirmation({ result, phone, onCancel, onReset }) {
+import { fmtDate, fmtTime } from '../../data';
+import type { BookingResult } from '../../types';
+import { Panel, Row } from '../../ui/Panel';
+import { Banner } from '../../ui/Banner';
+import { Button } from '../../ui/Button';
+export default function BookingConfirmation({ result, phone, onCancel, onReset }: { result: BookingResult; phone: string; onCancel: () => void; onReset: () => void }) {
   const { waitlisted, date, hour, service } = result;
   return (
     <Panel aria-live="polite">

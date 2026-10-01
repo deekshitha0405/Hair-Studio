@@ -1,10 +1,11 @@
-import { fmtDate, fmtTime } from '../data.js';
+import { fmtDate, fmtTime } from '../data';
+import type { Action, Booking, BookingRequest, FreeReason, LogEntry, Slot, State } from '../types';
 const SAVED = { confirm: 4, remind: 3, waitlist: 6, release: 5 }; // owner minutes saved per automation
-const entry = (msg) => ({ time: 'Just now', msg });
-const when = (r) => `${fmtDate(r.date)}, ${fmtTime(r.hour)}`;
+const entry = (msg: string): LogEntry => ({ time: 'Just now', msg });
+const when = (r: Slot) => `${fmtDate(r.date)}, ${fmtTime(r.hour)}`;
 
-function book(s, rec) {
-  const b = { id: Date.now(), ...rec, status: 'awaiting reply' };
+function book(s: State, rec: BookingRequest): State {
+  const b: Booking = { id: Date.now(), ...rec, status: 'awaiting reply' };
   return {
     ...s,
     bookings: [...s.bookings, b],
@@ -16,17 +17,17 @@ function book(s, rec) {
     ],
   };
 }
-function joinWaitlist(s, rec) {
+function joinWaitlist(s: State, rec: BookingRequest): State {
   return { ...s, waitlist: [...s.waitlist, rec], log: [entry(`${rec.name} joined the waitlist for ${when(rec)}.`), ...s.log] };
 }
-function freeSlot(s, id, reason) {
+function freeSlot(s: State, id: number, reason?: FreeReason): State {
   const gone = s.bookings.find((b) => b.id === id);
   if (!gone) return s;
   const rest = s.bookings.filter((b) => b.id !== id);
   const next = s.waitlist.find((w) => w.date === gone.date && w.hour === gone.hour);
   const why = reason === 'noreply' ? `${gone.name} didn't reply to the reminder, slot released.` : `${gone.name} cancelled via link.`;
   if (!next) return { ...s, bookings: rest, minutesSaved: s.minutesSaved + SAVED.release, log: [entry(`${why} Slot reopened online.`), ...s.log] };
-  const filled = { id: Date.now(), name: next.name, service: gone.service, date: gone.date, hour: gone.hour, status: 'confirmed' };
+  const filled: Booking = { id: Date.now(), name: next.name, service: gone.service, date: gone.date, hour: gone.hour, status: 'confirmed' };
   return {
     ...s,
     bookings: [...rest, filled],
@@ -35,7 +36,7 @@ function freeSlot(s, id, reason) {
     log: [entry(`${why} ${next.name} accepted from the waitlist and is confirmed.`), ...s.log],
   };
 }
-export function reducer(s, a) {
+export function reducer(s: State, a: Action): State {
   switch (a.type) {
     case 'book': return book(s, a.rec);
     case 'waitlist': return joinWaitlist(s, a.rec);

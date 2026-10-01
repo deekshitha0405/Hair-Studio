@@ -1,7 +1,8 @@
-import { fmtDate, fmtTime } from '../../data.js';
-import { StatusTag } from '../../ui/StatusTag.jsx';
-import { Button } from '../../ui/Button.jsx';
-export default function BookingRow({ booking: b, onNoReply }) {
+import { fmtDate, fmtTime } from '../../data';
+import type { Booking } from '../../types';
+import { StatusTag } from '../../ui/StatusTag';
+import { Button } from '../../ui/Button';
+export default function BookingRow({ booking: b, onNoReply }: { booking: Booking; onNoReply: () => void }) {
   const confirmed = b.status === 'confirmed';
   return (
     <li>

@@ -1,6 +1,7 @@
-import { nextDays } from '../data.js';
+import { nextDays } from '../data';
+import type { State } from '../types';
 const tomorrow = nextDays(1)[0];
-export const initialState = {
+export const initialState: State = {
   bookings: [
     { id: 1, name: 'Ananya R.', service: 'Global colour', date: tomorrow, hour: 11, status: 'confirmed' },
     { id: 2, name: 'Divya S.', service: 'Haircut & finish', date: tomorrow, hour: 16, status: 'awaiting reply' },
